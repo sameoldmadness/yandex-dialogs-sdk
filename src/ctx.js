@@ -1,14 +1,6 @@
 const ReplyBuilder = require('./replyBuilder')
 const ButtonBuilder = require('./buttonBuilder')
-const { reversedInterpolation } = require('./utils')
-
-const {
-  selectCommand,
-  selectSession,
-  selectSessionId,
-  selectUserId,
-  isFunction
-} = require('./utils')
+const { reversedInterpolation, selectCommand } = require('./utils')
 
 class Ctx {
   constructor({
@@ -64,6 +56,11 @@ class Ctx {
         .text(replyMessage)
         .tts(replyMessage)
         .get()
+
+      // Is no session, lets use context session
+      if (!replyMessage.session) {
+        replyMessage.session = this.session
+      }
     }
     return this._sendReply(replyMessage)
   }
